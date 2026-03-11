@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import UserRegister from '../pages/auth/UserRegister';
 import ChooseRegister from '../pages/auth/ChooseRegister';
 import UserLogin from '../pages/auth/UserLogin';
@@ -11,22 +11,48 @@ import BottomNav from '../components/BottomNav';
 import CreateFood from '../pages/food-partner/CreateFood';
 import Profile from '../pages/food-partner/Profile';
 
+// Simple auth check using cookies
+function isAuthenticated() {
+    // Check for token cookie
+    // Works for client-side only; for SSR, use server headers
+    const match = document.cookie.match(/(^|;)\s*token=([^;]+)/);
+    return !!(match && match[2]);
+}
+
+// Protect routes for authenticated users
+const ProtectedRoute = ({ children }) => {
+    if (!isAuthenticated()) {
+        // Redirect to sign-in/sign-up
+        return <Navigate to="/register" replace />;
+    }
+    return children;
+};
+
 const AppRoutes = () => {
-    return (
-        <Router>
-            <Routes>
-                <Route path="/register" element={<ChooseRegister />} />
-                <Route path="/user/register" element={<UserRegister />} />
-                <Route path="/user/login" element={<UserLogin />} />
-                <Route path="/food-partner/register" element={<FoodPartnerRegister />} />
-                <Route path="/food-partner/login" element={<FoodPartnerLogin />} />
-                <Route path="/" element={<><Home /><BottomNav /></>} />
-                <Route path="/saved" element={<><Saved /><BottomNav /></>} />
-                <Route path="/create-food" element={<CreateFood />} />
-                <Route path="/food-partner/:id" element={<Profile />} />
-            </Routes>
-        </Router>
-    )
+        return (
+                <Router>
+                        <Routes>
+                                <Route path="/register" element={<ChooseRegister />} />
+                                <Route path="/user/register" element={<UserRegister />} />
+                                <Route path="/user/login" element={<UserLogin />} />
+                                <Route path="/food-partner/register" element={<FoodPartnerRegister />} />
+                                <Route path="/food-partner/login" element={<FoodPartnerLogin />} />
+                                {/* Protected Home route */}
+                                <Route path="/" element={
+                                    <ProtectedRoute>
+                                        <><Home /><BottomNav /></>
+                                    </ProtectedRoute>
+                                } />
+                                <Route path="/saved" element={
+                                    <ProtectedRoute>
+                                        <><Saved /><BottomNav /></>
+                                    </ProtectedRoute>
+                                } />
+                                <Route path="/create-food" element={<CreateFood />} />
+                                <Route path="/food-partner/:id" element={<Profile />} />
+                        </Routes>
+                </Router>
+        )
 }
 
 export default AppRoutes
