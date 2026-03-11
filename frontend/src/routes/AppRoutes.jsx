@@ -11,18 +11,15 @@ import BottomNav from '../components/BottomNav';
 import CreateFood from '../pages/food-partner/CreateFood';
 import Profile from '../pages/food-partner/Profile';
 
-// Simple auth check using cookies
+
 function isAuthenticated() {
-    // Check for token cookie
-    // Works for client-side only; for SSR, use server headers
     const match = document.cookie.match(/(^|;)\s*token=([^;]+)/);
     return !!(match && match[2]);
 }
 
-// Protect routes for authenticated users
+
 const ProtectedRoute = ({ children }) => {
     if (!isAuthenticated()) {
-        // Redirect to sign-in/sign-up
         return <Navigate to="/register" replace />;
     }
     return children;
