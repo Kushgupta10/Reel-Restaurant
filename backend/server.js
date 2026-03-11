@@ -5,6 +5,9 @@ const connectDB = require('./src/db/db');
 
 connectDB();
 
-app.listen(3000, ()=> {
-    console.log("Server is running on port 3000")
-})
+const PORT = process.env.PORT || 3000;
+const BACKEND_URL = process.env.VITE_BACKEND_URL || `http://localhost:${PORT}`;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+    console.log(`Backend URL: ${BACKEND_URL}`);
+});

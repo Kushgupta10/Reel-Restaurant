@@ -8,7 +8,7 @@ const cors = require('cors');
 
 const app = express();
 app.use(cors({
-    origin: 'http://localhost:5173', // replace with your frontend URL
+    origin: process.env.VITE_FRONTEND_URL || 'http://localhost:5173',
     credentials: true
 }));
 app.use(cookieParser()); // as a middleware to parse cookies from incoming requests
