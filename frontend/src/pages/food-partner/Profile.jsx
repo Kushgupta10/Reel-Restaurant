@@ -9,7 +9,7 @@ const Profile = () => {
     const [ videos, setVideos ] = useState([])
 
     useEffect(() => {
-        axios.get(`http://localhost:3000/api/food-partner/${id}`, { withCredentials: true })
+        axios.get(`https://reel-restaurant.onrender.com/api/food-partner/${id}`, { withCredentials: true })
             .then(response => {
                 console.log(response.data);
                 setProfile(response.data.foodPartner)
