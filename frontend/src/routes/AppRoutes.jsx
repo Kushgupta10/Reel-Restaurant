@@ -1,4 +1,7 @@
 import React from 'react'
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { Navigate } from "react-router-dom";
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import UserRegister from '../pages/auth/UserRegister';
 import ChooseRegister from '../pages/auth/ChooseRegister';
@@ -12,16 +15,38 @@ import CreateFood from '../pages/food-partner/CreateFood';
 import Profile from '../pages/food-partner/Profile';
 
 
-function isAuthenticated() {
-    const match = document.cookie.match(/(^|;)\s*token=([^;]+)/);
-    return !!(match && match[2]);
-}
 
 
 const ProtectedRoute = ({ children }) => {
-    if (!isAuthenticated()) {
+
+    const [loading, setLoading] = useState(true);
+    const [isAuth, setIsAuth] = useState(false);
+
+    useEffect(() => {
+
+        axios.get(
+            `${import.meta.env.VITE_BACKEND_URL}/api/auth/me`,
+            { withCredentials: true }
+        )
+        .then(() => {
+            setIsAuth(true);
+            setLoading(false);
+        })
+        .catch(() => {
+            setIsAuth(false);
+            setLoading(false);
+        });
+
+    }, []);
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
+    if (!isAuth) {
         return <Navigate to="/register" replace />;
     }
+
     return children;
 };
 
