@@ -22,7 +22,7 @@ const Home = () => {
 
     async function likeVideo(item) {
 
-        const response = await axios.post("http://localhost:3000/api/food/like", { foodId: item._id }, {withCredentials: true})
+        const response = await axios.post("https://reel-restaurant.onrender.com/api/food/like", { foodId: item._id }, {withCredentials: true})
 
         if(response.data.like){
             console.log("Video liked");
