@@ -8,7 +8,7 @@ const Home = () => {
    
 
     useEffect(() => {
-        axios.get("http://localhost:3000/api/food", { withCredentials: true })
+        axios.get("https://reel-restaurant.onrender.com/api/food", { withCredentials: true })
             .then(response => {
 
                 console.log(response.data);
