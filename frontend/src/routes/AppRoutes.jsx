@@ -1,7 +1,6 @@
 import React from 'react'
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Navigate } from "react-router-dom";
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import UserRegister from '../pages/auth/UserRegister';
 import ChooseRegister from '../pages/auth/ChooseRegister';
